@@ -36,7 +36,7 @@ module.exports = {
                     });
                 } else {
                     res.status(200).send({
-                        message: "Add new negara is successfully",
+                        message: "Add new negara",
                         data: results
                     });
                 }
@@ -48,11 +48,10 @@ module.exports = {
 
     updateOne: (req, res) => {
         try {
-            const { id } = req.params;
 
             connection.query(
-                "UPDATE negara SET ? WHERE id=?",
-                [req.body, id],
+                "UPDATE negara SET ? WHERE idnegara=?",
+                [req.body, req.params.id],
                 function(error, results, fields) {
                     if (error) {
                         res.status(500).send({
@@ -69,5 +68,48 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+    getById: (req, res) => {
+        try {
+            connection.query(
+                `SELECT * FROM negara WHERE negara.idnegara=${req.params.id}`,
+                (error, results, fields) => {
+                    if (error) {
+                        res.status(500).send({
+                            message: `there is something problem: ${error.sqlMessage}`
+                        });
+                    } else {
+                        res.status(200).send({
+                            message: "Semua data tokoh",
+                            data: results
+                        });
+                    }
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    deleteOne: (req, res) => {
+        try {
+            connection.query(
+                `DELETE FROM negara WHERE idnegara=${req.params.id}`,
+                (error, results, fields) => {
+                    if (error) {
+                        res.status(500).send({
+                            message: `there is something problem: ${error.sqlMessage}`
+                        });
+                    } else {
+                        res.status(200).send({
+                            message: "Semua data tokoh",
+                            data: results
+                        });
+                    }
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
 };
